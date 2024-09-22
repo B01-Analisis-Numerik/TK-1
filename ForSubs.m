@@ -1,5 +1,7 @@
-% Fungsi Forward Substitution
-function y = ForwardSubstitution(L, b)
+% Forward Substitution
+% Kelompok 1 - Kelas B
+
+function y = ForSubs(L, b)
   n = length(b);
   y = zeros(n, 1);
   for i = 1:n

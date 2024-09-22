@@ -1,5 +1,7 @@
-% Fungsi Back Substitution
-function x = BackSubstitution(U, y)
+% Backward Substitution
+% Kelompok 1 - Kelas B
+
+function x = BackSubs(U, y)
   n = length(y);
   x = zeros(n, 1);
   for i = n:-1:1
