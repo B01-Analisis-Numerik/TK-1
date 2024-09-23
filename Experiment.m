@@ -34,26 +34,36 @@ for i = 1:length(N_values)
     kondA = norm(A) * norm(inv(A));
     condition_numbers(i, j) = kondA;
 
-    % --- Faktorisasi Pivot ---
+    % --- Faktorisasi dan Penyelesaian SPL dengan Pivot ---
     tic;
-    [L_pivot, U_pivot, piv] = Pivot(A);
+    [L_pivot, U_pivot, piv] = Pivot(A);  % Faktorisasi LU dengan Pivot
+    y_pivot = BackSubs(L_pivot, b);      % Backward substitution untuk y
+    x_pivot = BackSubs(U_pivot, y_pivot); % Backward substitution untuk x
     exec_time_pivot = toc;
 
-    % Simpan hasil waktu eksekusi untuk LU dengan pivot
+    % Simpan hasil waktu eksekusi untuk LU Pivot
     results_pivot_time(i, j) = exec_time_pivot;
 
-    % --- Faktorisasi Block ---
+    % --- Faktorisasi dan Penyelesaian SPL dengan Block ---
     tic;
-    [L_block, U_block] = Block(A);
+    [L_block, U_block] = Block(A);       % Faktorisasi LU Block
+    y_block = BackSubs(L_block, b);      % Backward substitution untuk y
+    x_block = BackSubs(U_block, y_block); % Backward substitution untuk x
     exec_time_block = toc;
 
     % Simpan hasil waktu eksekusi untuk LU Block
     results_block_time(i, j) = exec_time_block;
 
-    % --- Faktorisasi Recursive ---  (Catatan: Matikan saat N > 128)
-    tic;
-    [L_recursive, U_recursive] = Recursive(A);
-    exec_time_recursive = toc;
+    % --- Faktorisasi dan Penyelesaian SPL dengan Recursive ---
+    if N <= 128  % Batasi Recursive untuk N <= 128
+      tic;
+      [L_recursive, U_recursive] = Recursive(A);  % Faktorisasi LU Recursive
+      y_recursive = BackSubs(L_recursive, b);            % Backward substitution untuk y
+      x_recursive = BackSubs(U_recursive, y_recursive);  % Backward substitution untuk x
+      exec_time_recursive = toc;
+    else
+      exec_time_recursive = NaN;  % Jika N > 128, set sebagai NaN
+    end
 
     % Simpan hasil waktu eksekusi untuk LU Recursive
     results_recursive_time(i, j) = exec_time_recursive;
@@ -61,7 +71,6 @@ for i = 1:length(N_values)
     % Tampilkan hasil sementara
     fprintf('N = %d, p = %d, q = %d\n', N, p, q);
     fprintf('Pivot Time: %.6f, Block Time: %.6f, Recursive Time: %.6f\n', exec_time_pivot, exec_time_block, exec_time_recursive);
-    %fprintf('Pivot Time: %.6f, Block Time: %.6f\n', exec_time_pivot, exec_time_block);
     fprintf('Condition Number: %.6f\n\n', kondA);
   end
 end
@@ -93,4 +102,3 @@ disp('N \t (1, 1) \t (2, 1) \t (3, 4) \t (N/2, N/2)');
 for i = 1:length(N_values)
   fprintf('%d \t %.6f \t %.6f \t %.6f \t %.6f\n', N_values(i), condition_numbers(i, 1), condition_numbers(i, 2), condition_numbers(i, 3), condition_numbers(i, 4));
 end
-
