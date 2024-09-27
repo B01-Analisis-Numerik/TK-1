@@ -1,7 +1,7 @@
-% Faktorisasi LU dengan Block Khusus Matriks Diagonal
+% Faktorisasi LU dengan Block Khusus Tridiagonal Matriks
 % Kelompok 1 - Kelas B
 
-function [L, U] = BlockOpt(A)
+function [L, U] = BlockTM(A)
     % Input: A -> matriks tridiagonal ukuran n x n
     % Output: L, U -> faktor LU dari matriks A
     % Strategi Block LU Factoring khusus untuk matriks tridiagonal
