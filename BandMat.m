@@ -11,7 +11,7 @@ function A = BandMat(N, p, q)
   % dengan p dan q
   for i = 1:N
     for j = max(1, i-p):min(N, i+q)
-      A(i, j) = rand() + 1;
+      A(i, j) = rand();
     end
   end
 end

@@ -1,7 +1,11 @@
-% Faktorisasi LU secara Rekursif
+% Faktorisasi LU secara Rekursif dengan Max Depth
 % Kelompok 1 - Kelas B
 
-function [L, U] = Recursive(A)
+function [L, U] = MaxRec(A)
+  % Atur kedalaman rekursif hingga 1000
+  old_depth = max_recursion_depth;
+  max_recursion_depth(1000);
+
   % Inisalisasi n yaitu ukuran matriks persegi A
   [n, n] = size(A);
 
@@ -37,6 +41,8 @@ function [L, U] = Recursive(A)
 
   U = [a11,           bT;
        zeros(n-1, 1), U22];
+
+  max_recursion_depth(old_depth);
 end
 
 
