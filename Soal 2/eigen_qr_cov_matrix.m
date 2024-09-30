@@ -1,7 +1,8 @@
-function [Ev, Xs] = eigen_qr_cov_matrix(file_name, iterations)
+function [Ev, Xs, b] = eigen_qr_cov_matrix(file_name, iterations)
   % Step 1: Baca file CSV
   data = csvread(file_name, 1,0); % Membaca file mulai dari baris kedua (skip header)
   data_X = data(:,1:6);
+  b = data(:,7);
 
   % Step 2: Standarisasi data (mean centering and scaling)
   data_std = standardize_data(data_X);
