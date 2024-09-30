@@ -1,4 +1,4 @@
-function [Ev, Xs, A , b] = eigen_qr_cov_matrix(file_name, iterations)
+function [Ev, Xs , b] = eigen_qr_cov_matrix(file_name, iterations)
   % Step 1: Baca file CSV
   data = csvread(file_name, 1,0); % Membaca file mulai dari baris kedua (skip header)
   data_X = data(:,1:6);
@@ -10,7 +10,6 @@ function [Ev, Xs, A , b] = eigen_qr_cov_matrix(file_name, iterations)
 
   % Step 3: Hitung matriks kovarians
   cov_matrix = cov(data_std);
-  A = cov_matrix;
 
   % Step 4: Lakukan dekomposisi QR untuk mendapatkan eigenvalue dan eigenvector
   [Ak, QQ] = eigen_qr_householder(cov_matrix, iterations);
