@@ -58,9 +58,10 @@ function [Q, R] = qr_householder_optimized(A)
         v = x;
         v(1) = v(1) - alpha;
         v = v / norm(v);
-        v_vT = 2 * (v * v');
-        R(k:m, k:n) = R(k:m, k:n) - v_vT * R(k:m, k:n);
-        Q(:, k:m) = Q(:, k:m) - (Q(:, k:m) * v_vT');
+        Q_k = eye(n);
+        Q_k(k:n, k:n) = eye(length(v)) - 2 * (v * v');
+        R = Q_k * R;
+        Q = Q * Q_k;
     end
 end
 
@@ -80,6 +81,6 @@ function [Q, R] = qr_householder(A)
     Q_k = eye(n);
     Q_k(k:n, k:n) = eye(length(v)) - 2 * (v * v');
     R = Q_k * R;
-    Q = Q * Q_k';
+    Q = Q * Q_k;
   end
 end
