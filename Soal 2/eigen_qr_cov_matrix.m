@@ -15,7 +15,7 @@ function [Ev, Xs , b] = eigen_qr_cov_matrix(file_name, iterations)
   [Ak, QQ] = eigen_qr_householder(cov_matrix, iterations);
 
   % Step 5: Tampilkan hasil
-  disp('Eigenvalues (approximate diagonal of Ak):');
+  disp('Eigenvalues updated (approximate diagonal of Ak):');
   disp(diag(Ak));  % Diagonal of Ak will give the eigenvalues
   disp('');
 
@@ -37,7 +37,7 @@ function [Ak, QQ] = eigen_qr_householder(A, iterations)
   QQ = eye(n);  % Initialize orthonormal matrix -> Q Disimpan disini
 
   for k = 1:iterations
-    [Q, R] = qr_householder(Ak);  % Perform QR decomposition
+    [Q, R] = qr_householder_optimized(Ak);  % QR WITH OPTIMIZED CODE
     Ak = R * Q;  % Update Ak
     QQ = QQ * Q;  % Accumulate Q to get eigenvectors
     if mod(k, 100) == 0
@@ -45,6 +45,25 @@ function [Ak, QQ] = eigen_qr_householder(A, iterations)
     end
   end
 end
+
+function [Q, R] = qr_householder_optimized(A)
+    [m, n] = size(A);
+    Q = eye(m);
+    R = A;
+
+    for k = 1:n
+        x = R(k:m, k);
+        norm_x = norm(x);
+        alpha = -sign(x(1)) * norm_x;
+        v = x;
+        v(1) = v(1) - alpha;
+        v = v / norm(v);
+        v_vT = 2 * (v * v');
+        R(k:m, k:n) = R(k:m, k:n) - v_vT * R(k:m, k:n);
+        Q(:, k:m) = Q(:, k:m) - (Q(:, k:m) * v_vT');
+    end
+end
+
 
 function [Q, R] = qr_householder(A)
   % QR decomposition using Householder transformation
