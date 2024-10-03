@@ -29,7 +29,7 @@ Kelas B - Kelompok 1 - 2024/2025 Gasal
 | [Recursive.m](Soal%201/Recursive.m) | Kode faktorisasi LU secara rekursif |
 | [ReversePivot.m](Soal%201/ReversePivot.m) | Mendapatkan A dari faktorisasi LU dengan pivot |
 
-### Soal 2 - ...
+### Soal 2 - Regresi Linear
 | Kode | Penjelasan |
 | -- | -- |
 | [eigen_qr_cov_matrix.m](Soal%202/eigen_qr_cov_matrix.m) | Kode perhitungan eigen vector dan eigen value dari matriks kovarian menggunakan algoritma Householder Transformation |
