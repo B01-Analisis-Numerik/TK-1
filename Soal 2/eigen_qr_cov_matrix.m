@@ -55,16 +55,14 @@ function [Q, R] = qr_householder_optimized(A)
         x = R(k:m, k);
         norm_x = norm(x);
         alpha = -sign(x(1)) * norm_x;
-        v = x;
-        v(1) = v(1) - alpha;
-        v = v / norm(v);
-        Q_k = eye(n);
-        Q_k(k:n, k:n) = eye(length(v)) - 2 * (v * v');
+        x(1) = x(1) - alpha;
+        x = x / norm(x);
+        Q_k = eye(m);
+        Q_k(k:m, k:m) = eye(length(x)) - 2 * (x * x');
         R = Q_k * R;
         Q = Q * Q_k;
     end
 end
-
 
 function [Q, R] = qr_householder(A)
   % QR decomposition using Householder transformation
@@ -83,4 +81,21 @@ function [Q, R] = qr_householder(A)
     R = Q_k * R;
     Q = Q * Q_k;
   end
+end
+
+function [R, bt] = qr_householder_woQ_optimized(A, b)
+    [m, n] = size(A);
+    A = [A, b];
+
+    for j = 1:n
+        x = A(j:m, j);
+        norm_x = norm(x);
+        alpha = -sign(x(1)) * norm_x;
+        x(1) = x(1) - alpha;
+        x = x / norm_x;
+        A(j:m, j:n+1) = A(j:m, j:n+1) - 2 * (x * x' * A(j:m, j:n+1));
+    end
+
+    R = A(:, 1:n);
+    bt = A(:, n + 1);
 end

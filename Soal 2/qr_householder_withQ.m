@@ -1,20 +1,17 @@
 function [Q, R] = qr_householder_withQ(A)
-  % QR decomposition using Householder transformation for m x n matrix where m > n
-  [m, n] = size(A);  % Get dimensions of A
-  Q = eye(m);  % Initialize Q as an identity matrix of size m
-  R = A;  % Initialize R as the original matrix
+    [m, n] = size(A);
+    Q = eye(m);
+    R = A;
 
-  for k = 1:n
-    x = R(k:m, k);  % Take the subvector starting from row k
-    e = zeros(length(x), 1);  % Initialize e as a zero vector
-    e(1) = norm(x);  % Set the first element of e to be the norm of x
-    v = x - e;  % Calculate Householder vector
-    v = v / norm(v);  % Normalize v
-    H = eye(m);  % Create an identity matrix of size m
-    H(k:m, k:m) = eye(length(v)) - 2 * (v * v');  % Apply Householder transformation
-
-    R = H * R;  % Apply transformation to R
-    Q = Q * H';  % Update Q by multiplying by the transpose of H
-  end
+    for k = 1:n
+        x = R(k:m, k);
+        norm_x = norm(x);
+        alpha = -sign(x(1)) * norm_x;
+        x(1) = x(1) - alpha;
+        x = x / norm(x);
+        Q_k = eye(m);
+        Q_k(k:m, k:m) = eye(length(x)) - 2 * (x * x');
+        R = Q_k * R;
+        Q = Q * Q_k;
+    end
 end
-
