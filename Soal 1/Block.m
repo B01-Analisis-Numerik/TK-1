@@ -26,11 +26,17 @@ function [L, U] = Block(A)
     % 1. Faktorisasi A11 menjadi L11 dan U11
     [L11, U11] = LUFact(A11);
 
-    % 2. Hitung U12 = L11 \ A12
-    U12 = L11 \ A12;
+    % 2. Hitung U12 = L11 \ A12 menggunakan Forward Elimination
+    U12 = zeros(block_size, n - (i + block_size - 1));
+    for col = 1:size(A12, 2)
+        U12(:, col) = ForEli(L11, A12(:, col));
+    end
 
-    % 3. Hitung L21 = A21 / U11
-    L21 = A21 / U11;
+    % 3. Hitung L21 = A21 / U11 menggunakan Backward Substitution
+    L21 = zeros(size(A21, 1), block_size);
+    for row = 1:size(A21, 1)
+        L21(row, :) = BackSubs(U11', A21(row, :)')';
+    end
 
     % 4. Update submatriks D (A22) menjadi S
     S = A22 - L21 * U12;

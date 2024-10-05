@@ -46,21 +46,31 @@ function [L, U] = BlockTM(A)
         L(i:i+current_block_size-1, i:i+current_block_size-1) = L_ii;
         U(i:i+current_block_size-1, i:i+current_block_size-1) = U_ii;
 
-        % Perhitungan U_i,i+1 (blok di atas diagonal)
+        % Perhitungan U_i,i+1 (blok di atas diagonal) menggunakan Forward Elimination
         if ~isempty(A_i_ip1)
-            U(i:i+current_block_size-1, i+current_block_size:i+2*block_size-1) = L_ii \ A_i_ip1;
+            U_i_ip1 = zeros(current_block_size, size(A_i_ip1, 2));
+              for col = 1:size(A_i_ip1, 2)
+                  U_i_ip1(:, col) = ForEli(L_ii, A_i_ip1(:, col));
+              end
+            U(i:i+current_block_size-1, i+current_block_size:i+2*block_size-1) = U_i_ip1;
         end
 
         % Perhitungan L_i+1,i (blok di bawah diagonal)
         if ~isempty(A_ip1_i)
-            L(i+current_block_size:i+2*block_size-1, i:i+current_block_size-1) = A_ip1_i / U_ii;
+            L_ip1_i = zeros(size(A_ip1_i, 1), current_block_size);
+              for row = 1:size(A_ip1_i, 1)
+                  L_ip1_i(row, :) = BackSubs(U_ii', A_ip1_i(row, :)')';
+              end
+            L(i+current_block_size:i+2*block_size-1, i:i+current_block_size-1) = L_ip1_i;
         end
 
         % Schur Complement
         if i + 2*block_size - 1 <= n
             A(i+current_block_size:i+2*block_size-1, i+current_block_size:i+2*block_size-1) = ...
                 A(i+current_block_size:i+2*block_size-1, i+current_block_size:i+2*block_size-1) ...
-                - L(i+current_block_size:i+2*block_size-1, i:i+current_block_size-1) * ...
+                - ...
+                L(i+current_block_size:i+2*block_size-1, i:i+current_block_size-1) ...
+                * ...
                 U(i:i+current_block_size-1, i+current_block_size:i+2*block_size-1);
         end
     end
