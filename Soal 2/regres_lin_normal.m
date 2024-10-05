@@ -1,4 +1,4 @@
-function [X, res] = regres_lin_LU(Z, b)
+function [X, res] = regres_lin_normal(Z, b)
     Z_bias = [ones(size(Z, 1), 1), Z];
 
     A = Z_bias' * Z_bias;
