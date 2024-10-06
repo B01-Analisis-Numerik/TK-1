@@ -15,7 +15,7 @@ Precondition:
 - Harus sudah memiliki semua file yang dibutuhkan untuk projek ini. Folder Soal 1 dan 2
 - Harus sudah memasukkan data file ("pokindex_data.csv") ke folder yang sama dengan file function di soal ini.
 
-##### a.i dan ii) Standarisasi Data, EigenVector, dan EigenValue:
+#### a.i dan ii) Standarisasi Data, EigenVector, dan EigenValue:
 Jalankan function : `[Ev, Xs , b, Eig_val] = eigen_qr_cov_matrix(file_name, iterations);`
 
 Keterangan
@@ -25,7 +25,7 @@ Keterangan
 Contoh:
 `[Ev, Xs , b, Eig_val] = eigen_qr_cov_matrix("pokindex_data.csv", 40);`
 
-##### a.iii) PCA:
+#### a.iii) PCA:
 Jalankan function : `[Z] = pca_transform(Ev, Xs, k);`
 
 Keterangan
@@ -35,7 +35,7 @@ Keterangan
 Contoh:
 `[Z] = pca_transform(Ev, Xs, k);`
 
-##### a.iv) Regresi Linear:
+#### a.iv) Regresi Linear:
 Jalankan function untuk masing-masing algoritma:
 1. Persamaan Normal     :  
     `[X, res] = regres_lin_normal(Z, b);`
@@ -55,7 +55,7 @@ Keterangan
 - Parameter b didapatkan dari output function a.i dan ii
 - Parameter Q, R, dan bt didapatkan dari pemanggilan QR householder yang bersesuaian.
 
-#### Rangkuman Pemanggilan Regresi Linear:
+### Rangkuman Pemanggilan Regresi Linear:
 1. Persamaan Normal: 
 
     [Ev, Xs , b, Eig_val] = eigen_qr_cov_matrix("pokindex_data.csv", 40);
@@ -84,21 +84,21 @@ Keterangan
     
     [x, res] = regres_lin_woQ(R, bt)
 
-#### Cara Cepat (Function Gabungan Dari Cara Diatas)
+### Cara Cepat (Function Gabungan Dari Cara Diatas)
 Jalankan: `regres_lin_full(iteration);`
 
 Contoh : 
 
 regres_lin_full(40);
 
-### Langkah-Langkah Menjalankan Nomor 2b
+## Langkah-Langkah Menjalankan Nomor 2b
 
 Precondition: 
 - Harus sudah memiliki semua file yang dibutuhkan untuk projek ini. Folder Soal 1 dan 2
 - Harus sudah memasukkan data file ("pokindex_data.csv") dan ("pokindex_data_nooutlier") ke folder yang sama dengan file function di soal ini.
 
 
-##### b) Data Outlier:
+#### b) PCR Data No Outlier:
 Jalankan function: `regres_lin_no_outlier(iteration);`
 
 Keterangan
