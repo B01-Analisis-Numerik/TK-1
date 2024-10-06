@@ -1,7 +1,4 @@
 function [Ev, Xs , b] = eigen_qr_cov_matrix(file_name, iterations)
-  % Step 0: Jika iterations ganjil, maka kita tambahkan dengan 1 untuk menjamin iterations genap
-  iterations = iterations + mod(iterations, 2)
-
   % Step 1: Baca file CSV
   data = csvread(file_name, 1,0); % Membaca file mulai dari baris kedua (skip header)
   data_X = data(:,1:6);
@@ -18,9 +15,7 @@ function [Ev, Xs , b] = eigen_qr_cov_matrix(file_name, iterations)
   [Ak, QQ] = eigen_qr_householder(cov_matrix, iterations);
 
   % Step 5: Tampilkan hasil
-  disp('Eigenvalues updated (approximate diagonal of Ak):');
-  disp(diag(Ak));  % Diagonal of Ak will give the eigenvalues
-  disp('');
+  Eig_val = diag(Ak);
 
   % Eigen Vector
   Ev = QQ;
@@ -49,6 +44,7 @@ function [Ak, QQ] = eigen_qr_householder(A, iterations)
   end
 end
 
+% QR WITH OPTIMIZED CODE
 function [Q, R] = qr_householder_optimized(A)
     [m, n] = size(A);
     Q = eye(m);
@@ -67,6 +63,7 @@ function [Q, R] = qr_householder_optimized(A)
     end
 end
 
+% QR WITHOUT OPTIMIZED CODE (Perbandingan)
 function [Q, R] = qr_householder(A)
   % QR decomposition using Householder transformation
   [n, ~] = size(A);
@@ -84,21 +81,4 @@ function [Q, R] = qr_householder(A)
     R = Q_k * R;
     Q = Q * Q_k;
   end
-end
-
-function [R, bt] = qr_householder_woQ_optimized(A, b)
-    [m, n] = size(A);
-    A = [A, b];
-
-    for j = 1:n
-        x = A(j:m, j);
-        norm_x = norm(x);
-        alpha = -sign(x(1)) * norm_x;
-        x(1) = x(1) - alpha;
-        x = x / norm_x;
-        A(j:m, j:n+1) = A(j:m, j:n+1) - 2 * (x * x' * A(j:m, j:n+1));
-    end
-
-    R = A(:, 1:n);
-    bt = A(:, n + 1);
 end

@@ -36,6 +36,12 @@ Kelas B - Kelompok 1 - 2024/2025 Gasal
 | [pca_transform.m](Soal%202/pca_transform.m) | Kode transformasi PCA |
 | [qr_householder_withQ.m](Soal%202/qr_householder_withQ.m) | Kode QR decomposition menggunakan Householder Transformation dengan Q disimpan |
 | [qr_householder_woQ.m](Soal%202/qr_householder_woQ.m) | Kode QR decomposition menggunakan Householder Transformation tanpa Q |
+| [qr_householder_optimezed.m](Soal%202/qr_householder_optimezed.m) | Kode QR decomposition menggunakan Householder Transformation dengan Q disimpan (Optimasi) |
+| [qr_householder_woQ_optimized.m](Soal%202/qr_householder_woQ_optimized.m) | Kode QR decomposition menggunakan Householder Transformation tanpa Q (Optimasi)|
 | [regres_lin_normal.m](Soal%202/regres_lin_normal.m) | Kode regresi linear menggunakan persamaan normal |
 | [regres_lin_withQ.m](Soal%202/regres_lin_withQ.m) | Kode regresi linear menggunakan Householder Transformation dengan Q disimpan |
 | [regres_lin_woQ.m](Soal%202/regres_lin_woQ.m) | Kode regresi linear menggunakan Householder Transformation tanpa Q |
+| [regres_lin_full.m](Soal%202/regres_lin_full.m) | Kode regresi linear untuk semua Algoritma dari Awal Sampai Akhir |
+| [regres_lin_no_outlier.m](Soal%202/regres_lin_no_outlier.m) | Kode regresi linear menggunakan Householder Transformation tanpa Q untuk bandingin data outlier dan nooutlier|
+| [compare_efficiency.m](Soal%202/compare_efficiency.m) | Kode membandingkan hasil, residu, dan runtime semua Algo PCR |
+| [ForSub.m](Soal%202/ForSub.m) | Kode menjalankan Forward Subsitution dalam Algoritma |

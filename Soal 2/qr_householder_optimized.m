@@ -7,11 +7,10 @@ function [Q, R] = qr_householder_optimized(A)
         x = R(k:m, k);
         norm_x = norm(x);
         alpha = -sign(x(1)) * norm_x;
-        v = x;
-        v(1) = v(1) - alpha;
-        v = v / norm(v);
+        x(1) = x(1) - alpha;
+        x = x / norm(x);
         Q_k = eye(m);
-        Q_k(k:m, k:m) = eye(length(v)) - 2 * (v * v');
+        Q_k(k:m, k:m) = eye(length(x)) - 2 * (x * x');
         R = Q_k * R;
         Q = Q * Q_k;
     end
