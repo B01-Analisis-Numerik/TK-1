@@ -1,7 +1,7 @@
 % Mendapatkan A dari hasil Pivoting
 % Kelompok 1 - Kelas B
 
-function [A_rev] = ReversePivot(L, U, p)
+function [A_rev] = RevPiv(L, U, p)
   % Inisialisasi n yaitu ukuran matriks persegi L dan U
   [n, ~] = size(L);
 

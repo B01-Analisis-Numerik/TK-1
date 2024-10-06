@@ -10,7 +10,7 @@ Kelas B - Kelompok 1 - 2024/2025 Gasal
 | Muh.Kemal Lathif Galih Putra | 2206081225 |
 | Sabrina Aviana Dewi | 2206030520
 
-### Langkah-Langkah Menjalankan Nomer 2a
+### Langkah-Langkah Menjalankan Nomor 2a
 Precondition: 
 - Harus sudah memiliki semua file yang dibutuhkan untuk projek ini. Folder Soal 1 dan 2
 - Harus sudah memasukkan data file ("pokindex_data.csv") ke folder yang sama dengan file function di soal ini.
@@ -91,7 +91,7 @@ Contoh :
 
 regres_lin_full(40);
 
-### Langkah-Langkah Menjalankan Nomer 2b
+### Langkah-Langkah Menjalankan Nomor 2b
 
 Precondition: 
 - Harus sudah memiliki semua file yang dibutuhkan untuk projek ini. Folder Soal 1 dan 2

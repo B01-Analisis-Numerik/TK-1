@@ -1,7 +1,7 @@
 % Matriks Banded dan SPD generator
 % Kelompok 1 - Kelas B
 
-function A = BMSPB(N, q)
+function A = BandMatSPD(N, q)
   % Fungsi untuk menghasilkan matriks banded simetris positif definit
   % dengan ukuran N×N, lebar pita bawah dan atas q (p = q).
 

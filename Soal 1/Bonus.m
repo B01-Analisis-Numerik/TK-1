@@ -1,74 +1,87 @@
 function [L, U] = Bonus(A, p, q)
-% Performs LU factorization without pivoting on a banded matrix.
-% A: Original matrix
-% B: Compressed storage of the banded matrix (size: (p + q + 1) x N)
-% p: Lower bandwidth
-% q: Upper bandwidth
+% LU factorization of a banded matrix A using separate diagonal arrays
+% Inputs:
+%   A - N x N banded matrix
+%   p - lower bandwidth
+%   q - upper bandwidth
+% Outputs:
+%   L - N x N lower triangular matrix
+%   U - N x N upper triangular matrix
 
-[N, N] = size(A);
+N = size(A, 1);
 
-p_size = ((2 * N - p - 1) * p) / 2;
-q_size = ((2 * N - p - 1) * q) / 2;
-B_size = N + p_size + q_size;
+% Step 1: Compress the matrix A into separate diagonal arrays D_k
+num_diagonals = p + q + 1;
+D = cell(num_diagonals, 1); % Cell array to hold the diagonals
 
-% Compress the matrix A into B
-B = zeros(p + q + 1, B_size);
-for j = 1:N
-    for i = max(1, j - p):min(N, j + q)  % Catatan: Ubah j - q menjadi j - p dan j + p menjadi j + q
-        row = p + 1 + i - j;
-        if row >= 1 && row <= (p + q + 1) % Memastikan indeks row valid
-            B(row, j) = A(i, j);
+for k = -p:q
+    diag_index = k + p + 1; % Index from 1 to num_diagonals
+    if k >= 0
+        len = N - k;
+        D{diag_index} = zeros(len, 1);
+        for i = 1:len
+            D{diag_index}(i) = A(i, i + k);
+        end
+    else % k < 0
+        len = N + k; % Since k is negative, N + k < N
+        D{diag_index} = zeros(len, 1);
+        for i = 1:len
+            D{diag_index}(i) = A(i - k, i);
         end
     end
 end
 
-display(B);
+% Step 2: Initialize L and U
+L = zeros(N, N);
+U = zeros(N, N);
 
-for k = 1:N-1
-    % Diagonal element A(k, k) is at B(p + 1, k)
-    Akk = B(p + 1, k);
-
-    % Check for zero pivot
-    if Akk == 0
-        error('Zero pivot encountered at row %d', k);
-    end
-
-    % Loop over rows within lower bandwidth
-    for i = k+1:min(N, k + p)
-        % Position in B for A(i, k)
-        row_L = p + 1 + i - k;
-        L_ik = B(row_L, k) / Akk;
-        B(row_L, k) = L_ik;  % Overwrite with L(i, k)
-
-        % Loop over columns within upper bandwidth
-        for j = k+1:min(N, k + q)
-            % Positions in B
-            row_A = p + 1 + i - j;
-            row_U = p + 1 + k - j;
-            % Check if within bandwidth
-            if (row_A > 0 && row_A <= N) && (row_U > 0 && row_U <= N)
-                % Update A(i, j)
-                B(row_A, j) = B(row_A, j) - L_ik * B(row_U, j);
-            end
+% Step 3: Perform LU factorization using the diagonal arrays
+for k = 1:N
+    % Compute U(k, j) for j = k to min(N, k + q)
+    for j = k:min(N, k + q)
+        sum = 0;
+        for s = max(1, k - p):k - 1
+            sum = sum + L(k, s) * U(s, j);
         end
+        U(k, j) = A_comp(k, j, D, p, q) - sum;
+    end
+    L(k, k) = 1;
+
+    % Compute L(i, k) for i = k + 1 to min(N, k + p)
+    for i = k + 1:min(N, k + p)
+        sum = 0;
+        for s = max(1, k - p):k - 1
+            sum = sum + L(i, s) * U(s, k);
+        end
+        L(i, k) = (A_comp(i, k, D, p, q) - sum) / U(k, k);
     end
 end
+end
 
-% Initialize L and U
-L = eye(N);
-U = zeros(N);
-
-for j = 1:N
-    for i = max(1, j - p):min(N, j + q)
-        row = p + 1 + i - j;
-        if row >= 1 && row <= (p + q + 1) % Memastikan indeks row valid
-            if i > j
-                L(i, j) = B(row, j);
-            else
-                U(i, j) = B(row, j);
-            end
+% Function to access elements from the diagonal arrays D
+function val = A_comp(i, j, D, p, q)
+k = j - i;
+diag_index = k + p + 1; % Index in D
+if k >= -p && k <= q
+    if k >= 0
+        s = i;
+        len = length(D{diag_index});
+        if s >= 1 && s <= len
+            val = D{diag_index}(s);
+        else
+            val = 0;
+        end
+    else % k < 0
+        s = i + k;
+        len = length(D{diag_index});
+        if s >= 1 && s <= len
+            val = D{diag_index}(s);
+        else
+            val = 0;
         end
     end
+else
+    val = 0;
 end
 end
 
