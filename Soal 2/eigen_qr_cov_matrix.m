@@ -1,4 +1,7 @@
-function [Ev, Xs , b] = eigen_qr_cov_matrix(file_name, iterations)
+function [Ev, Xs , b, Eig_val] = eigen_qr_cov_matrix(file_name, iterations)
+  % Step 0: Jika iterations ganjil, maka kita tambahkan dengan 1 untuk menjamin iterations genap
+  iterations = iterations + mod(iterations, 2);
+
   % Step 1: Baca file CSV
   data = csvread(file_name, 1,0); % Membaca file mulai dari baris kedua (skip header)
   data_X = data(:,1:6);
